@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+<title>TODO supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css" media="screen">
+@import "css/jquery.mobile-1.4.5.min.css";
+</style>
+<style type="text/css" media="screen">
+@import "css/style.css";
+</style>
+<script src="js/jlongmemory.js" type="text/javascript"></script>
+<script src="js/jquery-2.0.0.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"
+	type="application/x-javascript" charset="utf-8"></script>
+</head>
+<body>
+
+	<!-- Начальная страница-->
+	<div data-role="page" id="start-menu" data-theme="a">
+		<div data-role="content">
+			<button onclick="window.location.href='#createpage'"
+				style="width: 100%">Создать</button>
+
+			<select id="s1" style="width: 100%" size="5">
+				<option value="op1">OP1</option>
+			</select>
+			<button onclick="window.location.href='#selectbase'" style="width: 100%">Выбрать</button>
+		</div>
+	</div>
+
+	<!-- страница создать-->
+	<div data-role="page" id="createpage" data-theme="a">
+		<div data-role="content">
+			<div>Создать</div>
+			<p>Название калоды</p>
+			<input id="createpage-kol-name" type="text" value="калода №">
+			<!-- <p>Вопрос</p>
+			<input id="createpage-question" type="text" value="">
+			<p>Ответ</p>
+			<input id="createpage-answer" type="text" value="">
+			<button onclick="add_deck();" style="width: 100%">добавить</button> -->
+			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#start-menu">Home</a></li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- страница выбрать-->
+	<div data-role="page" id="selectbase" data-theme="a">
+		<div data-role="content">
+			<div>Выбрать</div>
+			<div>
+				Новые<input type="text" id="text1ofSelectBase">
+			</div>
+			<div>
+				Повторение<input type="text" id="text2ofSelectBase">
+			</div>
+			<div>
+				<input type="button" onclick="" value="начать"
+					id="buttonBeginOofSelectBase">
+			</div>
+			<div>
+				<input type="button" onclick="window.location.href='#deckProperty '" value="настройки"
+					id="buttonPropertyOofSelectBase">
+			</div>
+
+			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#start-menu">Home</a></li>
+			</ul>
+
+		</div>
+	</div>
+	<div data-role="page" id="deckProperty" data-theme="a">
+		<div data-role="content">
+			<div>
+				Новых карточек в колоде<input type="text" id="text1ofDeckProperty">
+			</div>
+			<div>
+				<input type="button" onclick="" value="редактировать колоду"
+					id="buttonEditDeck">
+			</div>
+			<div>
+				<input type="button" onclick="" value="редактировать колоду"
+					id="buttonSaveEditDeck">
+			</div>
+			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#selectbase">назад</a></li>
+			</ul>
+
+		</div>
+	</div>
+
+
+</body>
+</html>
