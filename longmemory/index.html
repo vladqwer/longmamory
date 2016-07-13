@@ -30,10 +30,11 @@ and open the template in the editor.
 			<button onclick="window.location.href='#createpage'"
 				style="width: 100%">Создать</button>
 
-			<select id="s1" style="width: 100%" size="5">
+			<select id="s1" style="width: 100%" size="1">
 				<option value="op1">OP1</option>
 			</select>
 			<button onclick="window.location.href='#selectbase'" style="width: 100%">Выбрать</button>
+			<button onclick="refreshSelectDeck();" style="width: 100%">Обновить</button>
 		</div>
 	</div>
 
@@ -46,10 +47,12 @@ and open the template in the editor.
 			<!-- <p>Вопрос</p>
 			<input id="createpage-question" type="text" value="">
 			<p>Ответ</p>
-			<input id="createpage-answer" type="text" value="">
-			<button onclick="add_deck();" style="width: 100%">добавить</button> -->
+			<input id="createpage-answer" type="text" value="">-->
+			<button onclick="add_deck();" style="width: 100%">добавить</button> 
 			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#deckProperty">Настроить колоду</a></li>
 				<li><a href="#start-menu">Home</a></li>
+				
 			</ul>
 
 		</div>
@@ -79,6 +82,7 @@ and open the template in the editor.
 
 		</div>
 	</div>
+	<!-- страница настроек колоды-->
 	<div data-role="page" id="deckProperty" data-theme="a">
 		<div data-role="content">
 			<div>
@@ -88,10 +92,17 @@ and open the template in the editor.
 				<input type="button" onclick="" value="редактировать колоду"
 					id="buttonEditDeck">
 			</div>
-			<div>
-				<input type="button" onclick="" value="редактировать колоду"
-					id="buttonSaveEditDeck">
-			</div>
+			
+			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#selectbase">назад</a></li>
+			</ul>
+
+		</div>
+	</div>
+	<!-- страница редактирования колоды-->
+	<div data-role="page" id="editDeck" data-theme="a">
+			<input type="button" onclick="addCard" value="настройки"
+					id="buttonPropertyOofSelectBase">
 			<ul data-role="listview" data-inset="true" data-theme="a">
 				<li><a href="#selectbase">назад</a></li>
 			</ul>
