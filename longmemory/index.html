@@ -20,12 +20,15 @@ and open the template in the editor.
 <script src="js/jquery.mobile-1.4.5.min.js"
 	type="application/x-javascript" charset="utf-8"></script>
 </head>
-<body> 
+<body>
 
 
 
 	<!-- Начальная страница!-->
 	<div data-role="page" id="start-menu" data-theme="a">
+		<div data-role="header">
+			<h1>LongMemory</h1>
+		</div>
 		<div data-role="content">
 			<button onclick="window.location.href='#createpage'"
 				style="width: 100%">Создать</button>
@@ -33,8 +36,11 @@ and open the template in the editor.
 			<select id="s1" style="width: 100%" size="1">
 				<option value="op1">OP1</option>
 			</select>
-			<button onclick="window.location.href='#selectbase'" style="width: 100%">Выбрать</button>
+			<button onclick="window.location.href='#selectbase';selectDeck();"
+				style="width: 100%">Выбрать</button>
+
 			<button onclick="refreshSelectDeck();" style="width: 100%">Обновить</button>
+			<!-- <button onclick="selectDeck();" style="width: 100%">111</button> -->
 		</div>
 	</div>
 
@@ -48,19 +54,22 @@ and open the template in the editor.
 			<input id="createpage-question" type="text" value="">
 			<p>Ответ</p>
 			<input id="createpage-answer" type="text" value="">-->
-			<button onclick="add_deck();" style="width: 100%">добавить</button> 
+			<button onclick="add_deck();" style="width: 100%">добавить</button>
 			<ul data-role="listview" data-inset="true" data-theme="a">
 				<li><a href="#deckProperty">Настроить колоду</a></li>
 				<li><a href="#start-menu">Home</a></li>
-				
+
 			</ul>
 
 		</div>
 	</div>
 	<!-- страница выбрать-->
 	<div data-role="page" id="selectbase" data-theme="a">
+		<div data-role="header">
+			<h1>Выбрать</h1>
+		</div>
+
 		<div data-role="content">
-			<div>Выбрать</div>
 			<div>
 				Новые<input type="text" id="text1ofSelectBase">
 			</div>
@@ -72,8 +81,8 @@ and open the template in the editor.
 					id="buttonBeginOofSelectBase">
 			</div>
 			<div>
-				<input type="button" onclick="window.location.href='#deckProperty '" value="настройки"
-					id="buttonPropertyOofSelectBase">
+				<input type="button" onclick="window.location.href='#deckProperty '"
+					value="настройки" id="buttonPropertyOfSelectBase">
 			</div>
 
 			<ul data-role="listview" data-inset="true" data-theme="a">
@@ -84,15 +93,19 @@ and open the template in the editor.
 	</div>
 	<!-- страница настроек колоды-->
 	<div data-role="page" id="deckProperty" data-theme="a">
+		<div data-role="header">
+			<h1>Настройки</h1>
+		</div>
+
 		<div data-role="content">
 			<div>
 				Новых карточек в колоде<input type="text" id="text1ofDeckProperty">
 			</div>
 			<div>
-				<input type="button" onclick="" value="редактировать колоду"
-					id="buttonEditDeck">
+				<input type="button" onclick="window.location.href='#editDeck'"
+					value="редактировать колоду" id="buttonEditDeck">
 			</div>
-			
+
 			<ul data-role="listview" data-inset="true" data-theme="a">
 				<li><a href="#selectbase">назад</a></li>
 			</ul>
@@ -101,14 +114,44 @@ and open the template in the editor.
 	</div>
 	<!-- страница редактирования колоды-->
 	<div data-role="page" id="editDeck" data-theme="a">
-			<input type="button" onclick="addCard" value="настройки"
-					id="buttonPropertyOofSelectBase">
-			<ul data-role="listview" data-inset="true" data-theme="a">
-				<li><a href="#selectbase">назад</a></li>
-			</ul>
+		<div data-role="header">
+			<h1>Редактирование</h1>
+		</div>
+		<div data-role="content">
+			<table id="tableOfEditDeck">
+				
+			</table>
+			<div data-role="footer" data-theme="a">
+				<input type="button" onclick="window.location.href='#addCard'"
+					value="добавить карточку" id="buttonPropertyOfSelectBase">
+					<input type="button" onclick=""
+					value="обновить" id="buttonPropertyOfEditDeck">
+				<ul data-role="listview" data-inset="true" data-theme="a">
+					<li><a href="#deckProperty">назад</a></li>
+				</ul>
+			</div>
 
 		</div>
 	</div>
+	<!-- страница добавить карточку-->
+	<div data-role="page" id="addCard" data-theme="a">
+		<div data-role="header">
+			<h1>Добавить</h1>
+		</div>
+		<div data-role="content">
+			<div>Вопрос</div>
+			<input type="text" id="questionOfAddCard" value="поле вопроса">
+			<div>Ответ</div>
+			<input type="text" id="answerOfAddCard" value="поле ответа">
+			<input type="button" onclick="add_card();" value="добавить"
+				id="buttonAddOfAddCard">
+			<ul data-role="listview" data-inset="true" data-theme="a">
+				<li><a href="#editDeck">назад</a></li>
+			</ul>
+		</div>
+
+	</div>
+
 
 
 </body>

@@ -4,12 +4,13 @@ var indexedDB = window.indexedDB || window.mozIndexedDB
 
 var baseName = "filesBaselongmemory";
 var storeName = "";
+var currentStoreName = "";
 var bName = "baseParam";
 var sName = "storeParam";
 var baseversion = 1;
 var countDeck = 0;
 var dateRepeat = new Date(2000, 0, 1, 0, 0, 0, 0);
-var counter=0;///????
+var counter = 0;// /????
 function refreshSelectDeck1() {
 	counter++;
 	connectDB_forStoreName(function(db) {
@@ -19,25 +20,24 @@ function refreshSelectDeck1() {
 		request.onsuccess = function() {
 			console.log(request.result.name);
 			addopt(request.result.name);
-			if(counter<countDeck) refreshSelectDeck1()
+			if (counter < countDeck)
+				refreshSelectDeck1()
 		}
 	})
 
 }
-
 function refreshSelectDeck() {
 	connectDB_forStoreName(function(db) {
 		var request = db.transaction("storeforStoreName", "readonly")
 				.objectStore("storeforStoreName").get(0);
 		request.onerror = logerr;
 		request.onsuccess = function() {
-			
-				countDeck = request.result.count;
-				refreshSelectDeck1();
-			
+
+			countDeck = request.result.count;
+			refreshSelectDeck1();
+
 		};
 	});
-	
 
 }
 (function()// считывание версии базы
@@ -122,11 +122,13 @@ function connectDB(f)// для хранения колод
 		});
 		some.createIndex("by_answer", "answer");
 		some.createIndex("by_repeat", "repeat");
+		some.createIndex("by_count", "count");
 		some.put({
 			path : 0,
 			question : "how many",
-			answer : 0,
-			repeat : d
+			answer : "null",
+			repeat : d,
+			count : 0
 		});
 
 		connectDB(f);
@@ -245,6 +247,98 @@ function add_deck()// добавлении колоды
 	})();
 
 }
+function add_card() {
+	console.log('add0');
+	var countCard = 0;
+	var d = new Date(2001, 0, 1, 0, 0, 0, 0);
+	var fileForCard = {
+		path : 0,
+		question : "",
+		answer : "",
+		repeat : d,
+		count : 0
+	};
+	storeName = currentStoreName;
+	(function()// считывание версии базы
+			{
+				connectDB_Param(function(db) {
+					var request = db.transaction([ sName ], "readonly").objectStore(sName)
+							.get(1);
+					request.onerror = logerr;
+					request.onsuccess = function() {
+						// alert(request.result.version);
+						baseversion = request.result.version-1;
+						(function()// получение count
+								{
+									
+									(function(){
+										console.log('add1' + currentStoreName);
+										connectDB(function(db) {
+											var request = db.transaction(currentStoreName, "readonly")
+													.objectStore(currentStoreName).get(0);
+											request.onerror = logerr;
+											request.onsuccess = function() {
+												(function() {
+													console.log('add2');
+													countCard = request.result.count;
+													countCard++;
+													fileForCard.path = countCard;
+													fileForCard.question = document
+															.getElementById("questionOfAddCard").value;
+													fileForCard.answer = document
+															.getElementById("answerOfAddCard").value;
+													fileForCard.count = countCard;
+													connectDB(function(db) {
+														var request = db.transaction(currentStoreName,
+																"readwrite").objectStore(currentStoreName).put(
+																fileForCard);
+														request.onerror = logerr;
+														request.onsuccess = function() {
+															console.log('add3');
+															return request.result;
+														};
+														(function()// увеличение count
+														{
+															fileForCard.path = 0;
+															fileForCard.question = "how many";
+															fileForCard.answer = "null";
+															fileForCard.count = countCard;
+
+															connectDB(function(db) {
+																var request = db.transaction(currentStoreName,
+																		"readwrite").objectStore(
+																		currentStoreName).put(fileForCard);
+																request.onerror = logerr;
+																request.onsuccess = function() {
+																	return request.result;
+																};
+															});
+														})();
+													});
+
+												})();
+
+											}
+										});
+										
+									})();
+
+								})();
+					};
+				});
+			})();
+
+}
+function selectDeck() {
+	var select = document.getElementById("s1");
+	for (var i = 0; i < select.options.length; i++) {
+		var option = select.options[i];
+		if (option.selected) {
+			currentStoreName = option.value;
+			alert(currentStoreName);
+		}
+	}
+}
 
 // function getFile(file){
 // connectDB(function(db){
@@ -262,10 +356,13 @@ function add_deck()// добавлении колоды
 // });
 // }
 
-/*
- * (function del(){ window.indexedDB.deleteDatabase("baseParam");
- * window.indexedDB.deleteDatabase("baseforStoreName");
- * window.indexedDB.deleteDatabase("filesBaselongmemory");
- * 
- * }());
- */
+
+ /* (function del(){ window.indexedDB.deleteDatabase("baseParam");
+  window.indexedDB.deleteDatabase("baseforStoreName");
+  window.indexedDB.deleteDatabase("filesBaselongmemory");
+  window.indexedDB.deleteDatabase("filesBase");
+  window.indexedDB.deleteDatabase("filesBase2");
+  
+  
+  }());*/
+ 
