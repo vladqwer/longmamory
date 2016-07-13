@@ -27,6 +27,7 @@ function refreshSelectDeck1() {
 
 }
 function refreshSelectDeck() {
+
 	connectDB_forStoreName(function(db) {
 		var request = db.transaction("storeforStoreName", "readonly")
 				.objectStore("storeforStoreName").get(0);
@@ -39,6 +40,13 @@ function refreshSelectDeck() {
 		};
 	});
 
+}
+function addopt(nameOption)// добавление в список опций на главной странице
+{
+	var select = document.getElementById('s1');
+	var newOption = new Option(nameOption, nameOption);
+	select.appendChild(newOption);
+	newOption.selected = true;
 }
 (function()// считывание версии базы
 {
@@ -134,13 +142,6 @@ function connectDB(f)// для хранения колод
 		connectDB(f);
 	};
 };
-function addopt(nameOption)// добавление в список опций на главной странице
-{
-	var select = document.getElementById('s1');
-	var newOption = new Option(nameOption, nameOption);
-	select.appendChild(newOption);
-	newOption.selected = true;
-}
 function add_version_for_db()// добавление версии(увеличение на 1)
 {
 
@@ -260,76 +261,83 @@ function add_card() {
 	};
 	storeName = currentStoreName;
 	(function()// считывание версии базы
-			{
-				connectDB_Param(function(db) {
-					var request = db.transaction([ sName ], "readonly").objectStore(sName)
-							.get(1);
-					request.onerror = logerr;
-					request.onsuccess = function() {
-						// alert(request.result.version);
-						baseversion = request.result.version-1;
-						(function()// получение count
-								{
-									
-									(function(){
-										console.log('add1' + currentStoreName);
-										connectDB(function(db) {
-											var request = db.transaction(currentStoreName, "readonly")
-													.objectStore(currentStoreName).get(0);
-											request.onerror = logerr;
-											request.onsuccess = function() {
-												(function() {
-													console.log('add2');
-													countCard = request.result.count;
-													countCard++;
-													fileForCard.path = countCard;
-													fileForCard.question = document
-															.getElementById("questionOfAddCard").value;
-													fileForCard.answer = document
-															.getElementById("answerOfAddCard").value;
-													fileForCard.count = countCard;
-													connectDB(function(db) {
-														var request = db.transaction(currentStoreName,
-																"readwrite").objectStore(currentStoreName).put(
-																fileForCard);
-														request.onerror = logerr;
-														request.onsuccess = function() {
-															console.log('add3');
-															return request.result;
-														};
-														(function()// увеличение count
-														{
-															fileForCard.path = 0;
-															fileForCard.question = "how many";
-															fileForCard.answer = "null";
-															fileForCard.count = countCard;
+	{
+		connectDB_Param(function(db) {
+			var request = db.transaction([ sName ], "readonly").objectStore(
+					sName).get(1);
+			request.onerror = logerr;
+			request.onsuccess = function() {
+				// alert(request.result.version);
+				baseversion = request.result.version - 1;
+				(function()// получение count
+				{
 
-															connectDB(function(db) {
-																var request = db.transaction(currentStoreName,
-																		"readwrite").objectStore(
-																		currentStoreName).put(fileForCard);
-																request.onerror = logerr;
-																request.onsuccess = function() {
-																	return request.result;
-																};
-															});
-														})();
-													});
+					(function() {
+						console.log('add1' + currentStoreName);
+						connectDB(function(db) {
+							var request = db.transaction(currentStoreName,
+									"readonly").objectStore(currentStoreName)
+									.get(0);
+							request.onerror = logerr;
+							request.onsuccess = function() {
+								(function() {
+									console.log('add2');
+									countCard = request.result.count;
+									countCard++;
+									fileForCard.path = countCard;
+									fileForCard.question = document
+											.getElementById("questionOfAddCard").value;
+									fileForCard.answer = document
+											.getElementById("answerOfAddCard").value;
+									fileForCard.count = countCard;
+									connectDB(function(db) {
+										var request = db.transaction(
+												currentStoreName, "readwrite")
+												.objectStore(currentStoreName)
+												.put(fileForCard);
+										request.onerror = logerr;
+										request.onsuccess = function() {
+											console.log('add3');
+											return request.result;
+										};
+										(function()// увеличение count
+										{
+											fileForCard.path = 0;
+											fileForCard.question = "how many";
+											fileForCard.answer = "null";
+											fileForCard.count = countCard;
 
-												})();
-
-											}
-										});
-										
-									})();
+											connectDB(function(db) {
+												var request = db
+														.transaction(
+																currentStoreName,
+																"readwrite")
+														.objectStore(
+																currentStoreName)
+														.put(fileForCard);
+												request.onerror = logerr;
+												request.onsuccess = function() {
+													return request.result;
+												};
+											});
+										})();
+									});
 
 								})();
-					};
-				});
-			})();
+
+							}
+						});
+
+					})();
+
+				})();
+			};
+		});
+	})();
 
 }
-function selectDeck() {
+function selectDeck()// 
+{
 	var select = document.getElementById("s1");
 	for (var i = 0; i < select.options.length; i++) {
 		var option = select.options[i];
@@ -339,30 +347,106 @@ function selectDeck() {
 		}
 	}
 }
+function refreshOnEditDeck() {
 
-// function getFile(file){
-// connectDB(function(db){
-// var request = db.transaction([storeName],
-// "readonly").objectStore(storeName).get(file);
-// request.onerror = logerr;
-// request.onsuccess = function(){
-// alert(request.result.title);
-// //f(request.result ? request.result : -1);
-// f.path=request.result.path;
-// alert(f.path);
-// f.title=request.result.title;
-// f.author=request.result.author;
-// };
-// });
-// }
+	
+	(function()// считывание версии базы
+	{	
+		counter=0;
+		storeName = currentStoreName;
+		connectDB_Param(function(db) {
+			var request = db.transaction([ sName ], "readonly").objectStore(
+					sName).get(1);
+			request.onerror = logerr;
+			request.onsuccess = function() {
+				// alert(request.result.version);
+				baseversion = request.result.version - 1;
+				(function()// получение count
+				{
 
+					(function() {
+						console.log('add1' + currentStoreName);
+						connectDB(function(db) {
+							var request = db.transaction(currentStoreName,
+									"readonly").objectStore(currentStoreName)
+									.get(0);
+							request.onerror = logerr;
+							request.onsuccess = function() {
+								(function() {
+									console.log('add2');
+									countDeck = request.result.count;
+									refreshOnEditDeck1();
 
- /* (function del(){ window.indexedDB.deleteDatabase("baseParam");
-  window.indexedDB.deleteDatabase("baseforStoreName");
-  window.indexedDB.deleteDatabase("filesBaselongmemory");
-  window.indexedDB.deleteDatabase("filesBase");
-  window.indexedDB.deleteDatabase("filesBase2");
-  
-  
-  }());*/
- 
+								})();
+
+							}
+						});
+
+					})();
+
+				})();
+			};
+		});
+	})();
+}
+function refreshOnEditDeck1() {
+	var d = new Date(2001, 0, 1, 0, 0, 0, 0);
+	var fileForCard = {
+			path : 0,
+			question : "",
+			answer : "",
+			repeat : d,
+			count : 0
+		};
+	counter++;
+	connectDB(function(db) {
+		var request = db.transaction(currentStoreName, "readonly")
+				.objectStore(currentStoreName).get(counter);
+		request.onerror = logerr;
+		request.onsuccess = function() {
+			fileForCard.path=request.result.path;
+			fileForCard.question=request.result.question;
+			fileForCard.answer=request.result.answer;
+			fileForCard.repeat=request.result.repeat;
+			fileForCard.path=request.result.path;
+			//console.log(request.result.name);
+			//addopt(request.result.name);
+			if (counter < countDeck){
+				EditTable(fileForCard);
+				refreshOnEditDeck1();
+			}
+		}
+	})
+
+	
+}
+function EditTable(fileForCard)
+{
+	var table = document.getElementById('tableOfEditDeck');
+	var tr = document.createElement('tr'); // создаем еще строку
+	var td1 = document.createElement('td');
+	td1.innerHTML = fileForCard.question; // создаем столбец
+	var td2 = document.createElement('td');
+	td2.innerHTML = fileForCard.answer; // создаем еще столбец
+	var td3 = document.createElement('td');
+	td3.innerHTML = fileForCard.repeat; // создаем еще столбец
+	tr.appendChild(td1); // кладем в новосозданную строку первый
+							// новосозданный столбец
+	tr.appendChild(td2); // кладем в новосозданную строку второй
+							// новосозданный столбец
+	tr.appendChild(td3);
+	table.appendChild(tr); // кладем в таблицу новосозданную строку
+								// (последней)
+}
+
+/*
+ * (function del(){ window.indexedDB.deleteDatabase("baseParam");
+ * window.indexedDB.deleteDatabase("baseforStoreName");
+ * window.indexedDB.deleteDatabase("filesBaselongmemory");
+ * window.indexedDB.deleteDatabase("filesBase");
+ * window.indexedDB.deleteDatabase("filesBase2");
+ * 
+ * 
+ * }());
+ */
+
